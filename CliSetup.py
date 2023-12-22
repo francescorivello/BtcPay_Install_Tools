@@ -47,7 +47,6 @@ def gather_storage():
 
 
 print("Btc Pay easy installer by WanderingPi\n")
-# print(int(gather_ram()[:-5])+100)
 time.sleep(1.25)
 print(
     "This program is intendend to assist you in setting up and using an istance of BtcPay server,\n"

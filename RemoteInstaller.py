@@ -33,6 +33,7 @@ def start_installation():
     key_file = key_file_entry.get()
     key_passphrase = key_passphrase_entry.get()
     password = password_entry.get()
+    username = username_entry.get()
     local_script_path = script_path_entry.get()
 
     if not hostname:
@@ -43,7 +44,7 @@ def start_installation():
         print("Chose the directory of install script.")
         return
 
-    client = connect_ssh(hostname, "root", password, key_file, key_passphrase)
+    client = connect_ssh(hostname, username, password, key_file, key_passphrase)
     if client:
         remote_script_path = "install.sh"
 
@@ -72,7 +73,7 @@ def start_installation():
 #windows
 window = tk.Tk()
 window.title("BtcPay install tools remote installer")
-window.geometry("400x300")
+window.geometry("450x400")
 
 # Labels and input
 hostname_label = tk.Label(window, text="Remote server IP:")
@@ -90,6 +91,10 @@ key_passphrase_label.pack()
 key_passphrase_entry = tk.Entry(window, show="*")
 key_passphrase_entry.pack()
 
+username_label = tk.Label(window, text="Username to use:")
+username_label.pack()
+username_entry = tk.Entry(window, show="*")
+username_entry.pack()
 
 script_path_label = tk.Label(window, text="Install script directory:")
 script_path_label.pack()
