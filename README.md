@@ -17,4 +17,4 @@ This python script help user to run the generated bash script on the target mach
 - Choosing domain name
 - Choosing the required Lightning network implementation
 - Support for all the additional enviroments variable of btcpay server,tough this are considered as for advanced users and there will be no informations on them inside the scripts except for a link wich points to the official documentation in the gui script
-- Support for custom xmr node(TBA very soon in the cli script)
+- Support for custom xmr node

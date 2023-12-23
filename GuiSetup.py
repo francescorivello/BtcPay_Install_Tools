@@ -83,7 +83,7 @@ def seleziona_dropdown(event):
         elif dropdown_var.get() == "Option 2":
             add_line_label.config(text="")
     else:
-        add_line_label.config(text="")  # Nasconde il testo se l'opzione 4 non è selezionata")
+        add_line_label.config(text="")
 
 
 
@@ -201,7 +201,7 @@ dropdown_label.pack()
 dropdown_menu = ttk.Combobox(tab_sinistra, textvariable=dropdown_var, values=["LND", "Eclair"])
 dropdown_menu.pack()
 
-# Etichetta per la selezione nel dropdown
+
 add_line_label = tk.Label(tab_sinistra, text="")
 add_line_label.pack()
 

@@ -15,10 +15,10 @@ coin_requirements = {'btc': (1.5, 7), 'xmr': (1.5, 75), 'ltc': (1.5, 7), 'btg': 
 coin_list = ["btc", "xmr", "ltc", "btg", "xbc", "btx",
              "dash", "doge", "ftc", "grs", "lbtc",
              "mona", ]
-addFragments = ["opt-lnd-autocompact",
+addFragments = ["custom XMR node","opt-lnd-autocompact",
                 "opt-lnd-autopilot", "opt-lnd-keysend",
                 "opt-lnd-wtclient","opt-lnd-watchtower","opt-save-memory","opt-more-memory","opt-add-btcqbo","opt-add-librepatron","opt-add-woocommerce","opt-add-tor","opt-add-btctransmuter","opt-txindex","opt-expose-unsafe","opt-add-tor-relay","opt-add-electrumx","opt-add-electrum-ps","opt-add-electrum-bwt","opt-add-configurator","opt-add-pihole","opt-add-bluewallet-lndhub","opt-add-ndlc","opt-add-lightning-terminal","opt-add-mempool","opt-add-sphinxrelay","opt-add-thunderhub","opt-add-teos","opt-add-chatwoot","opt-add-zammad","opt-monero-expose","opt-add-fireflyiii","opt-add-joinmarket","opt-add-helipad","opt-add-nostr-relay","opt-add-cloudflared","opt-add-torq"]
-
+cxmr = "custom XMR node"
 def get_size(bytes, suffix="B"):
     factor = 1024
     for unit in ["", "K", "M", "G", "T", "P"]:
@@ -187,7 +187,7 @@ cl = data1[2]
 def foptselect(stdscr, checkbox_values=addFragments):
 
     selected_item = 0
-    checkboxes = ["opt-lnd-autocompact","opt-lnd-autopilot","opt-lnd-keysend","opt-lnd-wtclient","opt-lnd-watchtower","opt-save-memory","opt-save-memory","opt-add-btcqbo","opt-add-librepatron","opt-add-woocommerce","opt-add-tor","opt-add-btctransmuter","opt-add-txindex","opt-expose-usnafe","opt-add-tor-relay","opt-add-electrumx","opt-add-electrum-ps","opt-add-electrum-bwt","Go to page 2"]
+    checkboxes = ["custom XMR node","opt-lnd-autocompact","opt-lnd-autopilot","opt-lnd-keysend","opt-lnd-wtclient","opt-lnd-watchtower","opt-save-memory","opt-save-memory","opt-add-btcqbo","opt-add-librepatron","opt-add-woocommerce","opt-add-tor","opt-add-btctransmuter","opt-add-txindex","opt-expose-usnafe","opt-add-tor-relay","opt-add-electrumx","opt-add-electrum-ps","opt-add-electrum-bwt","Go to page 2"]
     checkbox_states = [False] * len(checkboxes)
     required_opt = []
     warning_message = ""
@@ -265,9 +265,15 @@ def soptselect(stdscr, checkbox_values=addFragments):
     return  required_opt
 
 data2 = curses.wrapper(foptselect)
+print(data2)
+if data2[0] == cxmr:
+    print("Input your custom xmr node domain and press enter:")
+    cnode = input(":")
+
 data3 = curses.wrapper(soptselect)
 
 with open("install.sh", "w") as file:
+    fuse = False
     file.write("#!/bin/bash\n")
     file.write("mkdir BTCPayServer\n")
     file.write("cd BTCPayServer\n")
@@ -290,12 +296,18 @@ with open("install.sh", "w") as file:
         cnum +=1
         file.write(f"export BTCPAYGEN_CRYPTO"+str(cnum)+"="+f'"{c}"\n')
     for n in data2:
-        file.write(f"export BTCPAYGEN_ADDITIONAL_FRAGMENTS"+"="+f'"{n}"\n')
+        if n == cxmr:
+            new_daemon_address = cnode
+            fuse = True
+        else:
+            file.write(f"export BTCPAYGEN_ADDITIONAL_FRAGMENTS"+"="+f'"{n}"\n')
     for z in data3:
         file.write(f"export BTCPAYGEN_ADDITIONAL_FRAGMENTS"+"="+f'"{z}"\n')
     file.write("export BTCPAYGEN_ADDITIONAL_FRAGMENTS="+"\"opt-save-storage-xxs"+"\"\n")
     file.write("export BTCPAYGEN_REVERSEPROXY="+"\"nginx"+"\"\n")
     file.write("export BTCPAY_ENABLE_SSH="+"\"true"+"\"\n")
+    if fuse:
+        file.write('\nnew_daemon_address =' + '"' + new_daemon_address + '"' + '\'\ncd docker-compose-generator/docker-fragments/\nsed -i "s/--daemon-address=monerod:18081/--daemon-address=$new_daemon_address/g" monero.yml')
     file.write(". ./btcpay-setup.sh -i")
 os.chmod("install.sh", 101)
 print("install.sh written in current directory, run it using ./install.sh")
