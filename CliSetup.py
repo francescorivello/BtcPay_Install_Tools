@@ -266,9 +266,12 @@ def soptselect(stdscr, checkbox_values=addFragments):
 
 data2 = curses.wrapper(foptselect)
 print(data2)
-if data2[0] == cxmr:
-    print("Input your custom xmr node domain and press enter:")
-    cnode = input(":")
+try:
+    if data2[0] == cxmr:
+        print("Input your custom xmr node domain and press enter:")
+        cnode = input(":")
+except:
+       print("No custom Xmr node chosen")
 
 data3 = curses.wrapper(soptselect)
 
