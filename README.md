@@ -1,20 +1,98 @@
-# BtcPay Server install tool
-This is a set of python scripts intend to facilitate the installation of a BtcPay server istance
-for people less accustomed to the use of the console or the bash enviroments
-It is divided in 3 three scripts
+# BTCPay Install Tools
 
-# CliSetup.py
-This setup is meant to be used directly on the target server,it is a guided setup in wich the user will need to input the domain and other datas while also choosing with checkboxes the coin/features it want to support
-The Cli setup differentiate itself from the gui counterpart by having a dynamic Ram/hdd space requirements counter wich (approximately) tracks ram and space usage of the selected cryptos and warn the user if their selection could cause instability or problems
-# GuiSetup.py
-This is the Gui version and is meant to be used on wider range of scenarios,delivering the easiest experince of setup,it is divided in different tabs each one with checkboxes or empty entries to fill
-At the end you will be able to save a .sh bash script wich can either be used by the user itself on the target machine,or ran by the remote installer.
-# RemoteInstaller.py
-This python script help user to run the generated bash script on the target machine,it supports both public key auth and user/password based authentication,after filling the required entries you can run it,it will connect to the target host and run the script,if it encounters any error it will output it,and if everything work it will also confirm it to the user
+Questo progetto è stato iniziato come contributo per la **community open source della criptovaluta Monero (XMR)** tramite la piattaforma [Monero Bounties](https://bounties.monero.social/posts/77/10-052m-make-btcpay-server-configuration-accessible).  
+Il lavoro è stato presentato con l’alias **WanderingPI**, e da lì è nato il fork di questa repository.  
 
-# Basic functionality of the two setup tools  
- Both tools,excluded for some differences like the resource usage meter on the cli version,offer the same options such as:
-- Choosing domain name
-- Choosing the required Lightning network implementation
-- Support for all the additional enviroments variable of btcpay server,tough this are considered as for advanced users and there will be no informations on them inside the scripts except for a link wich points to the official documentation in the gui script
-- Support for custom xmr node
+BTCPay Install Tools è una suite di strumenti in **Python** per semplificare la configurazione e l’installazione di **BTCPay Server**.  
+Il progetto fornisce tre modalità di utilizzo:  
+- **CLI interattiva**  
+- **Interfaccia grafica (GUI)**  
+- **Installer remoto via SSH**  
+
+L’obiettivo è permettere a utenti con diversi livelli di competenza di generare ed eseguire uno script di installazione personalizzato di BTCPay Server, riducendo errori manuali e accelerando il deployment.
+
+---
+
+## 📂 Componenti principali
+
+### 1. `CliSetup.py`
+- Installer basato su **riga di comando interattiva (CLI)** con supporto a `curses`.  
+- Funzionalità:
+  - Inserimento dominio host.  
+  - Scelta del supporto **Lightning Network** (clightning, LND, Eclair).  
+  - Selezione delle criptovalute supportate con calcolo automatico di RAM e spazio disco richiesti.  
+  - Attivazione di **opzioni avanzate** (fragments Docker Compose).  
+  - Creazione di uno script finale `install.sh` pronto da eseguire.  
+- Include **check delle risorse disponibili** per evitare configurazioni che eccedano RAM o spazio disco.  
+
+### 2. `GuiSetup.py`
+- Interfaccia **grafica Tkinter** per utenti meno esperti.  
+- Funzionalità:
+  - Inserimento dominio e selezione criptovalute tramite checkbox.  
+  - Configurazione Lightning Network (no LN, LN parziale, full node con LND/Eclair).  
+  - Abilitazione di oltre 30 fragments opzionali (Electrum, Tor, Mempool, WooCommerce, ecc.).  
+  - Configurazione di **nodo Monero personalizzato**.  
+  - Generazione di uno script `.sh` salvabile in una directory a scelta.  
+
+### 3. `RemoteInstaller.py`
+- Strumento con GUI che permette di **installare BTCPay Server su un server remoto** via SSH.  
+- Funzionalità:
+  - Connessione SSH con password o chiave privata.  
+  - Selezione dello script locale `install.sh` generato con CLI o GUI.  
+  - Upload automatico sul server remoto ed esecuzione.  
+  - Output dell’installazione mostrato in tempo reale.  
+
+---
+
+## 🚀 Flusso di utilizzo
+
+1. **Preparazione**  
+   - Decidi se utilizzare la **CLI** o la **GUI** per generare il file `install.sh`.  
+
+2. **Generazione script**  
+   - Inserisci dominio, criptovalute, supporto LN, fragments opzionali.  
+   - Salva lo script personalizzato (`install.sh`).  
+
+3. **Installazione**  
+   - Opzione 1: esegui lo script localmente con `./install.sh`.  
+   - Opzione 2: utilizza `RemoteInstaller.py` per caricarlo ed eseguirlo automaticamente su un server remoto via SSH.  
+
+---
+
+## 🛠️ Tecnologie utilizzate
+
+- **Python 3.8+**  
+- Librerie standard:  
+  - `os`, `time`, `subprocess`, `shutil`, `curses` (CLI)  
+  - `tkinter`, `ttk`, `filedialog`, `webbrowser` (GUI)  
+- Librerie esterne:  
+  - `psutil` (analisi risorse)  
+  - `paramiko` (SSH remoto)  
+
+---
+
+## ⚙️ Requisiti
+
+- **Sistema operativo:** Linux o Windows (con Python 3.8+)  
+- **Dipendenze Python:**  
+
+```bash
+pip install -r requirements.txt
+
+
+## Conclusione
+
+Questo progetto unisce tre modalità di utilizzo (CLI, GUI e installazione remota) per facilitare il deployment di **BTCPay Server**.  
+È un esempio concreto di:
+
+- Sviluppo di interfacce CLI/GUI con Python
+- Automazione di installazioni complesse
+- Integrazione con SSH e gestione remota
+- Attenzione a UX sia per utenti avanzati che principianti
+
+> ### ⚠️ Nota importante
+> 
+> A causa di cambiamenti nel funzionamento interno di **BTCPay Server**, questo progetto è da considerarsi attualmente **deprecato**.
+
+
+
