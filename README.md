@@ -71,14 +71,6 @@ L’obiettivo è permettere a utenti con diversi livelli di competenza di genera
 
 ---
 
-## ⚙️ Requisiti
-
-- **Sistema operativo:** Linux o Windows (con Python 3.8+)  
-- **Dipendenze Python:**  
-
-```bash
-pip install -r requirements.txt
-
 
 ## Conclusione
 
